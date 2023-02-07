@@ -3,7 +3,6 @@ from turtle import RawTurtle
 from time import sleep
 from random import randint
 
-
 CVWIDTH = 650
 CVHEIGHT = 500
 
@@ -17,12 +16,11 @@ frameescolhas = tk.Frame(root, pady=20)
 frameescolhas.grid(row=0, column=0, padx=10, pady=10)
 
 tk.Label(frameescolhas, text="""Quem você acha que vai ganhar?
- Dê o seu palpite entre as opções disponíveis, 
- em seguida inicie o jogo.""").pack(side="top", pady=15)
+ Deixe o seu palpite e em seguida 
+ inicie o jogo para conferir.""").pack(side="top", pady=15)
 
 # Tela da área da corrida
 canvas = tk.Canvas(root, width=CVWIDTH, height=CVHEIGHT)
-canvas.configure(bg='green')
 canvas.grid(row=0, column=1, padx=10, pady=10)
 
 # INICIALIZAÇÃO DOS OBJETOS TURTLE
@@ -100,7 +98,7 @@ def gerar_linha_chegada():
 def gerar_pontos(cor: str, y):
     t_pontos.ht()
     t_pontos.color(cor)
-    t_pontos.speed(2)
+    t_pontos.speed(3)
 
     coord = []
 
@@ -127,6 +125,14 @@ def gerar_pontos(cor: str, y):
     return coord
 
 
+def verificar_par_proximo(coord_origin):
+    import par_pts_prox as ppp
+
+    Px, Py = ppp.first_sort(coord_origin)
+
+    return ppp.par_mais_proximo(Px, Py)
+
+
 def set_posicoes():
     t1.up()
     t1.speed(4)
@@ -148,29 +154,52 @@ def inicializar():
     set_posicoes()
 
 
-def valendo():
+def mover_players(c1, c2):
+    t1.down()
+    t2.down()
+
+    pares_prox_t1 = verificar_par_proximo(c1)
+    pares_prox_t2 = verificar_par_proximo(c2)
+
+    if len(pares_prox_t1) == 2:
+        pares_prox_t1 = pares_prox_t1[1]
+    if(len(pares_prox_t2)) == 2:
+        pares_prox_t2 = pares_prox_t2[1]
+
+    sleep(0.5)
+    ct_t1 = 0
+    ct_t2 = 0
+
+    for i in range(len(c1)):
+        if t1.pos() in pares_prox_t1 and ct_t1 < 2:
+            ct_t1 += 1
+
+        if t2.pos() in pares_prox_t2 and ct_t2 < 2:
+            ct_t2 += 1
+
+        t1.speed(8) if ct_t1 >= 2 else t1.speed(randint(1, 4))
+
+        t2.speed(8) if ct_t2 >= 2 else t2.speed(randint(1, 4))
+
+        t1.goto(c1[i])
+        t2.goto(c2[i])
+
+    while t1.xcor() <= 250 and t2.xcor() <= 250:
+        t1.forward(10)
+        t2.forward(10)
+
+
+def iniciar_corrida():
     inicializar()
     botao_iniciar.config(state='disabled')
     botao_reset.config(state='disabled')
     opt1.config(state='disabled')
     opt2.config(state='disabled')
 
-    t1.down()
-    t2.down()
-
     coordenadas1 = gerar_pontos('red', 1)
     coordenadas2 = gerar_pontos('purple', 2)
 
-    sleep(0.5)
-    for i in range(len(coordenadas1)):
-        t1.speed(randint(1, 4))
-        t2.speed(randint(1, 4))
-        t1.goto(coordenadas1[i])
-        t2.goto(coordenadas2[i])
-
-    while t1.xcor() <= 250 and t2.xcor() <= 250:
-        t1.forward(randint(6, 10))
-        t2.forward(randint(6, 10))
+    mover_players(coordenadas1, coordenadas2)
 
     vencedor()
 
@@ -216,7 +245,7 @@ if __name__ == '__main__':
     framebotao = tk.Frame(root, pady=20)
     framebotao.grid(row=0, column=2, padx=10, pady=10)
 
-    botao_iniciar = tk.Button(framebotao, text="Iniciar corrida", command=valendo,
+    botao_iniciar = tk.Button(framebotao, text="Iniciar corrida", command=iniciar_corrida,
                               state='normal')
     botao_iniciar.pack(pady=10)
 
