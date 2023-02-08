@@ -2,6 +2,7 @@ import tkinter as tk
 from turtle import RawTurtle
 from time import sleep
 from random import randint
+import jogo
 
 CVWIDTH = 650
 CVHEIGHT = 500
@@ -63,7 +64,7 @@ def gerar_linhas():
     t_linha_div.setpos(-CVWIDTH / 2.0, 0)
     sleep(0.2)
     t_linha_div.down()
-    t_linha_div.forward(CVWIDTH-65)
+    t_linha_div.forward(CVWIDTH - 65)
 
     gerar_linha_chegada()
 
@@ -152,6 +153,8 @@ def inicializar():
     t2.st()
     t2.clear()
     set_posicoes()
+    t1.speed(jogo.velocidade())
+    t2.speed(jogo.velocidade())
 
 
 def mover_players(c1, c2):
@@ -163,7 +166,7 @@ def mover_players(c1, c2):
 
     if len(pares_prox_t1) == 2:
         pares_prox_t1 = pares_prox_t1[1]
-    if(len(pares_prox_t2)) == 2:
+    if len(pares_prox_t2) == 2:
         pares_prox_t2 = pares_prox_t2[1]
 
     sleep(0.5)
@@ -177,9 +180,11 @@ def mover_players(c1, c2):
         if t2.pos() in pares_prox_t2 and ct_t2 < 2:
             ct_t2 += 1
 
-        t1.speed(8) if ct_t1 >= 2 else t1.speed(randint(1, 4))
+        if ct_t2 >= 2:
+            t2.speed(8)
 
-        t2.speed(8) if ct_t2 >= 2 else t2.speed(randint(1, 4))
+        if ct_t1 >= 2:
+            t1.speed(8)
 
         t1.goto(c1[i])
         t2.goto(c2[i])
@@ -210,7 +215,6 @@ def iniciar_corrida():
 
 
 def vencedor():
-
     FONT = ("Courier", 18, "bold")
 
     if t1.xcor() > t2.xcor():
