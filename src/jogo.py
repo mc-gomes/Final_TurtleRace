@@ -14,7 +14,8 @@ def velocidade():
 
 def prim():
     # Gera um grafo de matriz de adjacência
-    G = np.random.randint(3, 10, (N, N))
+    # com valores das arestas variando entre 1 e 10
+    G = np.random.randint(1, 10, (N, N))
 
     lista_de_nos = []
 
