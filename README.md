@@ -10,7 +10,11 @@
 | 19/0093331 |  Matheus Costa |
 
 ## Sobre 
-O projeto é uma corrida realizada automaticamente entre duas tartarugas, que são instâncias do objeto Turtle da bilbioteca importada. Após a corrida iniciada, o objetivo é que uma termine o trajeto antes da outra. Utilizamos dos conteúdos de Grafos (algoritmo de Prim) e Dividir e Conquistar (Par de pontos mais próximos) para auxiliar na lógica do jogo.
+O projeto é uma corrida realizada automaticamente entre duas tartarugas, que são instâncias do objeto Turtle da biblioteca importada. O objetivo é que uma termine o trajeto antes da outra, passando por todos os pontos gerados antes de irem para a linha de chegada. Utilizamos dos conteúdos de Grafos (algoritmo de Prim) e Dividir e Conquistar (Par de pontos mais próximos) para auxiliar na lógica do jogo.
+
+Após iniciado o jogo, serão plotados pontos aleatórios na tela para cada uma das tartarugas, e esses pontos formarão um grafo para cada. Com os grafos gerados, é aplicado o **algoritmo de Prim** em cada um para criar as respectivas Árvores Geradoras Mínimas (minimum spanning tree), e em seguida, como resultado do algoritmo, os pesos atribuídos a cada aresta são utilizados para se calcular uma média que irá determinar a velocidade inicial de cada tartaruga.
+
+Em segundo plano, o algoritmo para calcular o **Par de Pontos mais próximos** é aplicado para encontrar qual é esse par em cada grafo, e assim que uma tartaruga passa pelos pontos que fazem parte desse par, sua velocidade é aumentada fazendo com que ela termine mais rápido o seu trajeto.
 
 ## Screenshots
 
@@ -40,9 +44,5 @@ Em seguida clone o repositório e entre na pasta src e digite o seguinte comando
 `python3 main.py`
 
 ## Uso 
-Clicar no botão "Iniciar corrida" que aparecerá na tela para iniciar o jogo.
-
-
-
-
+Ao clicar no botão "Iniciar corrida" que aparecerá na tela, o jogo iniciará automaticamente e as tartarugas percorrerão o campo alcançando todos os pontos antes de irem para a linha de chegada.
 
